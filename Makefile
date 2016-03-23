@@ -53,7 +53,7 @@ TARGET = main
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c usb_serial.c 
+SRC = $(TARGET).c usb_serial.c millis.c
 
 
 # List Assembler source files here.
@@ -63,7 +63,7 @@ SRC = $(TARGET).c usb_serial.c
 # Even though the DOS/Win* filesystem matches both .s and .S the same,
 # it will preserve the spelling of the filenames, and gcc itself does
 # care about how the name is spelled on its command-line.
-ASRC = Assembler1.S
+ASRC = otp.S
 
 
 
