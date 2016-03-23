@@ -35,7 +35,7 @@ int main() {
 	char inputbuffer[STR_LEN]={'\0'};// speicher für empfangene zeichen
  
     
- 	char text[100] = {"Hello World" }; //klartext zum verschlüsseln oder verschlüsselter text zum entschlüsseln
+ 	char text[100] = {"Hello World 123" }; //klartext zum verschlüsseln oder verschlüsselter text zum entschlüsseln
     char key[100] =  {"js,jfhalkfsdfjs324r87wzrshif"}; //key zum ver oder entschlüsseln
     
 	while(1) {   //loop forever   
@@ -66,6 +66,31 @@ int main() {
                     printInfo (text, key);
 					crypt(text,key);
                 }
+                
+                 else if (strncmp(inputbuffer,"key:",4)==0)
+                { 
+                    if ( strlen(text) <= strlen(inputbuffer+4) ) //key is longer than text
+                        {
+                        memset	(key,'\0',100); 
+                        memcpy	(key, inputbuffer+4,strlen(inputbuffer+4) );
+                        }
+                    else 
+                        usb_send_str("\r\nKey zu kurz!\r\n"); 
+                }
+                
+                else if (strncmp(inputbuffer,"text:",5)==0)
+                {
+                    if ( strlen(key) >= strlen(inputbuffer+5) )
+                    {
+                       memset	(text,'\0',100); 
+                       memcpy	(	text, inputbuffer+5 , strlen(inputbuffer+5) ); //memcopy inputbuffer+4 -> key	
+                    }
+                    else 
+                       usb_send_str("\r\nKey zu kurz!\r\n");  
+                }
+                
+                
+                
                 else if ( (inputbuffer[0]=='?') || (strncmp(inputbuffer,"help",4)==0))
                 {
                     usb_send_str("\r\n==========================================");
@@ -96,24 +121,3 @@ void printInfo (char* text, char *key){
     usb_send_str("\r\n");
     usb_serial_flush_output();
 }
-
-/*
-
-
- else if (strncmp(inputbuffer,"key:",4)==0)
-                {
-                    if ( strlen(text) > strlen(inputbuffer+4) )
-                      memcpy	(	key, inputbuffer+4 	, strlen(inputbuffer+4) ); //memcopy inputbuffer+4 -> key	
-                    else 
-                      usb_send_str("\r\n key zu kurz");  
-                }
-                else if (strncmp(inputbuffer,"text:",5)==0)
-                {
-                     if ( strlen(key)<strlen(inputbuffer+5) )
-                      memcpy	(	text, inputbuffer+5 , strlen(inputbuffer+5) ); //memcopy inputbuffer+4 -> key	
-                    else 
-                      usb_send_str("\r\n Key zu kurz");  
-                }
-                
-                
-             */
